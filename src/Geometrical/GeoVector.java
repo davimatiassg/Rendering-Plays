@@ -230,4 +230,14 @@ public class GeoVector implements Collection{
 		// TODO Auto-generated method stub
 		return this.axes.toArray(arg0);
 	}
+	
+	public String toString()
+	{
+		String s = "";
+		for(Float f : axes) 
+		{
+			s = s + f + " ";
+		}
+		return s;
+	}
 }

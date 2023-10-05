@@ -43,7 +43,8 @@ public class Camera {
 	}
 
 	public void setRotation(Quaternion rotation) {
-		this.rotation = rotation;
+		this.rotation = rotation.unitary();
+		System.out.println("Rotation SET: " + this.rotation.toString());
 		this.up = Quaternion.Rotate(rotation, GeoVector.up());
 		this.right = Quaternion.Rotate(rotation, GeoVector.right());
 		this.forward = Quaternion.Rotate(rotation, GeoVector.forward());

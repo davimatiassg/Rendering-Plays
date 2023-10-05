@@ -12,14 +12,14 @@ public class Mesh {
 		this.vertices = vertices;
 		center = new GeoVector(vertices.get(0).getDimensions());
 
-		for(int i = 0; i < vertices.size(); i++)
+		for(int j = 0; j < center.getDimensions(); j++)
 		{
 			Float sum = 0f;
-			for(int j = 0; j < center.getDimensions(); j++)
+			for(int i = 0; i < vertices.size(); i++)
 			{
 				sum += getVertex(i).getAxis(j);
 			}
-			center.setAxis(i, sum/center.getDimensions());
+			center.setAxis(j, sum/center.getDimensions());
 		}
 	}
 
