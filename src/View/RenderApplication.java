@@ -50,12 +50,27 @@ public class RenderApplication extends JPanel {
         setBackground(Color.BLACK);
 
         ArrayList<Integer[]> renderedPixels = mainCamera.render(currentScene);
-
-        for(Integer[] pixel : renderedPixels)
+        
+        if(renderedPixels.size() <= 0) { return; }
+        
+        Integer[] pixel = {0, 0};
+        
+        for(int i = 0; i < renderedPixels.size(); i++)
         {
+        	pixel = renderedPixels.get(i);
             g.setColor(Color.WHITE);
-            g.drawLine(pixel[0], pixel[1], pixel[0], pixel[1]);
+            g.drawLine(pixel[0]+5, pixel[1]-5, pixel[0]-5, pixel[1]+5);
+            g.drawLine(pixel[0]-5, pixel[1]-5, pixel[0]+5, pixel[1]+5);
+            
+            if(i < renderedPixels.size()-1)
+            {
+            	Integer[] pixel2 = renderedPixels.get(i+1);
+            	g.drawLine(pixel[0], pixel[1], pixel2[0], pixel2[1]);
+            }
         }
+        Integer[] pixel2 = renderedPixels.get(0);
+        g.drawLine(pixel[0], pixel[1], pixel2[0], pixel2[1]);
+        	
     }
 /*
     // Método para atualizar as coordenadas da linha
@@ -73,6 +88,13 @@ public class RenderApplication extends JPanel {
         GeoVector v = new GeoVector(3);
         GeoVector g = new GeoVector(3);
         GeoVector a = new GeoVector(3);
+        Quaternion q = new Quaternion();
+        q.setAxis(0, 0.94f);
+        q.setAxis(1, 0.11f);
+        q.setAxis(2, 0.17f);
+        q.setAxis(3, -0.28f);
+        
+        screen.mainCamera.setRotation(q);
         v.setAxis(0, -500f);
         v.setAxis(1, 330f);
         g.setAxis(1, 50f);
