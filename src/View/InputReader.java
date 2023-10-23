@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 import java.util.ArrayList;
 
-import Geometrical.*;
-import Rendering.Camera;
+import model.Geometrical.*;
+import model.Rendering.Camera;
 
 public class InputReader {
 
@@ -41,15 +41,28 @@ public class InputReader {
 	public static Mesh readMesh(BufferedReader buffRead) throws IOException
 	{
 		ArrayList<GeoVector> vertices = new ArrayList<GeoVector>();
+		ArrayList<Integer[]> triangles = new ArrayList<Integer[]>();
 		String line = buffRead.readLine();
 		if(line != null) {
-			while(!line.contains("###"))
+			while(!line.contains("$$$"))
 			{
 				vertices.add(readPoint(line, buffRead.readLine()));
 				line = buffRead.readLine();
 			}
+			line = buffRead.readLine();
+			String[] trianglesString = line.split(",");
+			for(String triangleS : trianglesString)
+			{
+				String[] vertexIndex = triangleS.split(" ");
+				Integer[] triangle = new Integer[vertexIndex.length];
+				for(int i = 0; i < vertexIndex.length; i++) 
+				{
+					triangle[i] = Integer.valueOf(vertexIndex[i]);
+				}
+				triangles.add(triangle);
+			}
 		}
-		return new Mesh(vertices);
+		return new Mesh(vertices, triangles);
 	}
 	
 	public static Scene readScene(String path) throws IOException {

@@ -8,8 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 
-import Rendering.Camera;
-import Geometrical.*;
+import model.Rendering.Camera;
+import model.Geometrical.*;
 
 public class RenderApplication extends JPanel {
 	private Camera mainCamera;
@@ -47,29 +47,6 @@ public class RenderApplication extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.BLACK);
-
-        ArrayList<Integer[]> renderedPixels = mainCamera.render(currentScene);
-        
-        if(renderedPixels.size() <= 0) { return; }
-        
-        Integer[] pixel = {0, 0};
-        
-        for(int i = 0; i < renderedPixels.size(); i++)
-        {
-        	pixel = renderedPixels.get(i);
-            g.setColor(Color.WHITE);
-            g.drawLine(pixel[0]+5, pixel[1]-5, pixel[0]-5, pixel[1]+5);
-            g.drawLine(pixel[0]-5, pixel[1]-5, pixel[0]+5, pixel[1]+5);
-            
-            if(i < renderedPixels.size()-1)
-            {
-            	Integer[] pixel2 = renderedPixels.get(i+1);
-            	g.drawLine(pixel[0], pixel[1], pixel2[0], pixel2[1]);
-            }
-        }
-        Integer[] pixel2 = renderedPixels.get(0);
-        g.drawLine(pixel[0], pixel[1], pixel2[0], pixel2[1]);
-        	
     }
 
  
@@ -77,7 +54,8 @@ public class RenderApplication extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Tela com Pixel Móvel em Java");
         RenderApplication screen = new RenderApplication();
-        frame.add(screen);
+        //frame.add(screen);
+        frame.add(screen.mainCamera);
         frame.setSize(new Dimension(1920, 1080));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -87,8 +65,8 @@ public class RenderApplication extends JPanel {
         	try {
             	screen.setCurrentScene(InputReader.readScene("..\\input\\defaultScene.rend"));
     			InputReader.configCamera(screen.mainCamera, "..\\input\\defaultCamera.rend");
-                Thread.sleep(20); // Espera 2 segundos
-                screen.repaint(); // Move a linha para (200, 200)
+                Thread.sleep(20); // Espera 0.02 segundos
+                screen.mainCamera.repaint(); // Move a linha para (200, 200)
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (IOException e) {

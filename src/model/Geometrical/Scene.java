@@ -1,6 +1,6 @@
-package Geometrical;
+package model.Geometrical;
+
 import java.util.ArrayList;
-import Rendering.Camera;
 
 public class Scene {
 	
