@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,10 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import java.util.ArrayList;
+import geometrical.*;
+import rendering.Camera;
 
-import model.Geometrical.*;
-import model.Rendering.Camera;
+import java.util.ArrayList;
 
 public class InputReader {
 
@@ -29,6 +29,7 @@ public class InputReader {
 	}
 	public static GeoVector readPoint(String declaration, String values) throws IOException
 	{
+		//System.out.println("kk: " + declaration + " - " + values);
 		GeoVector vertex = new GeoVector(Integer.parseInt(declaration.split(":")[1]));
 		int counter = 0;
 		for(String s : values.split(" ")) 
@@ -43,14 +44,17 @@ public class InputReader {
 		ArrayList<GeoVector> vertices = new ArrayList<GeoVector>();
 		ArrayList<Integer[]> triangles = new ArrayList<Integer[]>();
 		String line = buffRead.readLine();
+		line = buffRead.readLine();
 		if(line != null) {
 			while(!line.contains("$$$"))
 			{
 				vertices.add(readPoint(line, buffRead.readLine()));
 				line = buffRead.readLine();
 			}
+			
 			line = buffRead.readLine();
-			String[] trianglesString = line.split(",");
+			String[] trianglesString = line.split(", ");
+			System.out.println("Tamanhuio" + trianglesString.length);
 			for(String triangleS : trianglesString)
 			{
 				String[] vertexIndex = triangleS.split(" ");
@@ -62,6 +66,7 @@ public class InputReader {
 				triangles.add(triangle);
 			}
 		}
+		line = buffRead.readLine();
 		return new Mesh(vertices, triangles);
 	}
 	
@@ -71,15 +76,16 @@ public class InputReader {
 		String line = "";
 		
 		while(line != null){
-			line = buffRead.readLine();
+			
 			scene.addMesh(readMesh(buffRead));
 			line = buffRead.readLine();
-			
+		
 		}
 		buffRead.close();
 		
 		return scene;
 	}
+	
 	
 	public static void configCamera(Camera cam, String path) throws IOException {
 		BufferedReader buffRead = new BufferedReader(new FileReader(path));
@@ -91,7 +97,7 @@ public class InputReader {
 		
 		buffRead.readLine();
 		buff = buffRead.readLine().split(" ");
-		System.out.println("Lendo Position: " + buff[0] + " " + buff[1] + " " + buff[2] + " ");
+		//System.out.println("Lendo Position: " + buff[0] + " " + buff[1] + " " + buff[2] + " ");
 		ArrayList<Float> floatCoords = new ArrayList<Float>();
 		for(String s : buff) 
 		{
@@ -103,11 +109,11 @@ public class InputReader {
 		
 		buffRead.readLine();
 		buff = buffRead.readLine().split(" ");
-		System.out.println("Lendo Rotation: " + buff[0] + " " + buff[1] + " " + buff[2] + " " + buff[3]);
+		//System.out.println("Lendo Rotation: " + buff[0] + " " + buff[1] + " " + buff[2] + " " + buff[3]);
 		for(String s : buff) 
 		{
 			floatCoords.add(Float.parseFloat(s));
-			System.out.print(Float.parseFloat(s));
+			//System.out.print(Float.parseFloat(s));
 			System.out.print(" ");
 		}
 		Quaternion q = new Quaternion(floatCoords);
